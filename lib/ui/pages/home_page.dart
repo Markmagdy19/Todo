@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:chatt/ui/utils/theme_provider.dart';
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -6,12 +7,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:chatt/models/services/notification_services.dart';
-import 'package:chatt/models/services/theme_services.dart';
+import 'package:chatt/ui/utils/theme_services.dart';
 import 'package:chatt/ui/pages/add_task_page.dart';
 import 'package:chatt/ui/utils/size_config.dart';
 import 'package:chatt/ui/widgets/button.dart';
 import 'package:intl/intl.dart';
 import 'package:chatt/ui/widgets/task_tile.dart';
+import 'package:provider/provider.dart';
 import '../../controllers/task_controller.dart';
 import '../../models/task.dart';
 import '../utils/theme.dart';
@@ -57,39 +59,50 @@ class _HomePageState extends State<HomePage> {
   }
 
   AppBar _appBar() => AppBar(
-    elevation: 0,
-    backgroundColor: context.theme.colorScheme.surface,
-    leading: IconButton(
-      onPressed: () {
-        ThemeServices().switchModeTheme();
-        NotifyHelper().displayNotification;
-      },
-      icon: Icon(
-        Get.isDarkMode
-            ? Icons.wb_sunny_outlined
-            : Icons.nightlight_round_outlined,
-        size: 28,
-        color: Get.isDarkMode ? Colors.white : darkGreyClr,
-      ),
-    ),
-    actions:  [
-      IconButton(onPressed:() {
-        notifyHelper.cancelAllNotification();
-        _taskController.deleteAllTasks();
-      },
-        icon: const Icon(Icons.delete_sweep_rounded),
-        color:Get.isDarkMode ? Colors.white : darkGreyClr,
-        iconSize:28,
-      ),
-      const CircleAvatar(
-        radius: 20,
-        child: Icon(Icons.person),
-      ),
-      const SizedBox(
-        width: 20,
-      )
-    ],
-  );
+        elevation: 0,
+        backgroundColor: context.theme.colorScheme.surface,
+        leading: IconButton(
+          onPressed: () {
+            setState(() {
+              Provider.of<ThemeProvider>(context, listen: false).setThemeMode(
+                  Theme.of(context).brightness == Brightness.light
+                      ? ThemeMode.dark
+                      : ThemeMode.light);
+              // ThemeServices().switchModeTheme();
+              // NotifyHelper().displayNotification;
+            });
+          },
+          icon: Icon(
+            Theme.of(context).brightness == Brightness.dark
+                ? Icons.wb_sunny_outlined
+                : Icons.nightlight_round_outlined,
+            size: 28,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : darkGreyClr,
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              notifyHelper.cancelAllNotification();
+              _taskController.deleteAllTasks();
+            },
+            icon: const Icon(Icons.delete_sweep_rounded),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : darkGreyClr,
+            iconSize: 28,
+          ),
+          const CircleAvatar(
+            radius: 20,
+            child: Icon(Icons.person),
+          ),
+          const SizedBox(
+            width: 20,
+          )
+        ],
+      );
 
   _addTaskBar() {
     return Container(
@@ -102,18 +115,20 @@ class _HomePageState extends State<HomePage> {
             children: [
               Text(
                 DateFormat.yMMMMd().format(DateTime.now()),
-                style: subheadingStyle,
+                style: subheadingStyle(context),
               ),
               Text(
                 'Today',
-                style: headingStyle,
+                style: headingStyle(context),
               ),
             ],
           ),
           MyButton(
             label: '+ Add Task',
             onTap: () async {
-              await Get.to(() => const AddTaskPage());
+              await Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const AddTaskPage()));
+              setState(() {});
               _taskController.getTasks();
             },
           )
@@ -173,12 +188,14 @@ class _HomePageState extends State<HomePage> {
                     task.date == DateFormat.yMd().format(_selectedDate) ||
                     (task.repeat == 'Weekly' &&
                         _selectedDate
-                            .difference(DateFormat.yMd().parse(task.date!))
-                            .inDays % 7 == 0) ||
+                                    .difference(
+                                        DateFormat.yMd().parse(task.date!))
+                                    .inDays %
+                                7 ==
+                            0) ||
                     (task.repeat == 'Monthly' &&
                         DateFormat.yMd().parse(task.date!).day ==
                             _selectedDate.day)) {
-
                   // Sanitize and parse the time string
                   try {
                     String sanitizedTime = _sanitizeTimeString(task.startTime!);
@@ -236,7 +253,8 @@ class _HomePageState extends State<HomePage> {
 
     // Check each character in the string and log its code unit
     for (int i = 0; i < time.length; i++) {
-      print('Character at position $i: ${time[i]}, code unit: ${time.codeUnitAt(i)}');
+      print(
+          'Character at position $i: ${time[i]}, code unit: ${time.codeUnitAt(i)}');
     }
 
     // Remove all non-printable and control characters
@@ -250,7 +268,10 @@ class _HomePageState extends State<HomePage> {
     print('After removing non-printable characters: "$time"');
 
     // Replace non-breaking spaces with regular spaces
-    time = time.replaceAll('\u00A0', ' ').replaceAll('\u202F', ' ').trim(); // Non-breaking space and Narrow no-break space
+    time = time
+        .replaceAll('\u00A0', ' ')
+        .replaceAll('\u202F', ' ')
+        .trim(); // Non-breaking space and Narrow no-break space
 
     // Log the time string after replacing non-breaking spaces
     print('After replacing non-breaking spaces: "$time"');
@@ -289,11 +310,11 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   SizeConfig.orientation == Orientation.landscape
                       ? const SizedBox(
-                    height: 8,
-                  )
+                          height: 8,
+                        )
                       : const SizedBox(
-                    height: 220,
-                  ),
+                          height: 220,
+                        ),
                   SvgPicture.asset(
                     'assets/images/task.svg',
                     semanticsLabel: 'Task',
@@ -305,17 +326,17 @@ class _HomePageState extends State<HomePage> {
                         horizontal: 30, vertical: 12),
                     child: Text(
                       'You do not have any tasks yet\n Add new tasks to make your days productive ',
-                      style: subTitleStyle,
+                      style: subTitleStyle(context),
                       textAlign: TextAlign.center,
                     ),
                   ),
                   SizeConfig.orientation == Orientation.landscape
                       ? const SizedBox(
-                    height: 120,
-                  )
+                          height: 120,
+                        )
                       : const SizedBox(
-                    height: 180,
-                  ),
+                          height: 180,
+                        ),
                 ],
               ),
             ),
@@ -327,9 +348,9 @@ class _HomePageState extends State<HomePage> {
 
   _buildBottomSheet(
       {required String label,
-        required Function() onTap,
-        required Color clr,
-        bool isClose = false}) {
+      required Function() onTap,
+      required Color clr,
+      bool isClose = false}) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -340,9 +361,9 @@ class _HomePageState extends State<HomePage> {
           border: Border.all(
             width: 3,
             color: isClose
-                ? Get.isDarkMode
-                ? Colors.grey[600]!
-                : Colors.grey[300]!
+                ? Theme.of(context).brightness == Brightness.dark
+                    ? Colors.grey[600]!
+                    : Colors.grey[300]!
                 : clr,
           ),
           borderRadius: BorderRadius.circular(20),
@@ -351,8 +372,9 @@ class _HomePageState extends State<HomePage> {
         child: Center(
           child: Text(
             label,
-            style:
-            isClose ? titleStyle : titleStyle.copyWith(color: Colors.white),
+            style: isClose
+                ? titleStyle(context)
+                : titleStyle(context).copyWith(color: Colors.white),
           ),
         ),
       ),
@@ -366,36 +388,40 @@ class _HomePageState extends State<HomePage> {
           width: SizeConfig.screenWidth,
           height: (SizeConfig.orientation == Orientation.landscape)
               ? (task.isCompleted == 1
-              ? SizeConfig.screenHeight * 0.6
-              : SizeConfig.screenHeight * 0.8)
+                  ? SizeConfig.screenHeight * 0.6
+                  : SizeConfig.screenHeight * 0.8)
               : (task.isCompleted == 1
-              ? SizeConfig.screenHeight * 0.30
-              : SizeConfig.screenHeight * 0.39),
-          color: Get.isDarkMode ? darkHeaderClr : Colors.white,
+                  ? SizeConfig.screenHeight * 0.30
+                  : SizeConfig.screenHeight * 0.39),
+          color: Theme.of(context).brightness == Brightness.dark
+              ? darkHeaderClr
+              : Colors.white,
           child: Column(
             children: [
               Flexible(
                   child: Container(
-                    height: 8,
-                    width: 120,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Get.isDarkMode ? Colors.grey[600] : Colors.grey[200],
-                    ),
-                  )),
+                height: 8,
+                width: 120,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.grey[600]
+                      : Colors.grey[200],
+                ),
+              )),
               const SizedBox(
                 height: 20,
               ),
               task.isCompleted == 1
                   ? Container()
                   : _buildBottomSheet(
-                  label: 'Task Completed',
-                  onTap: () {
-                    notifyHelper.cancelNotification(task);
-                    _taskController.markTaskAsCompleted(task.id!);
-                    Get.back();
-                  },
-                  clr: primaryClr),
+                      label: 'Task Completed',
+                      onTap: () {
+                        notifyHelper.cancelNotification(task);
+                        _taskController.markTaskAsCompleted(task.id!);
+                        Get.back();
+                      },
+                      clr: primaryClr),
               _buildBottomSheet(
                   label: 'Delete Task',
                   onTap: () {
@@ -405,7 +431,9 @@ class _HomePageState extends State<HomePage> {
                   },
                   clr: Colors.red[400]!),
               Divider(
-                color: Get.isDarkMode ? Colors.grey : darkGreyClr,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.grey
+                    : darkGreyClr,
               ),
               _buildBottomSheet(
                   label: 'Cancel',

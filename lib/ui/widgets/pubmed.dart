@@ -24,11 +24,12 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
       _articles = _apiService.fetchArticles(keyword: _keywordController.text);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('PubMed Articles'),
+        title: const Text('PubMed Articles'),
       ),
       body: Column(
         children: [
@@ -42,7 +43,7 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
               decoration: InputDecoration(
                 labelText: 'Search Keyword',
                 suffixIcon: IconButton(
-                  icon: Icon(Icons.search),
+                  icon: const Icon(Icons.search),
                   onPressed: _searchArticles,
                 ),
               ),
@@ -52,18 +53,18 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
             child: FutureBuilder<List<ArticleSummaryModel>>(
               future: () async {
                 await _articles.then((value) async => _articlesDetails =
-                await _apiService.fetchArticlesDetails(
-                    value.toList().cast<String>() ?? []));
+                    await _apiService.fetchArticlesDetails(
+                        value.toList().cast<String>() ?? []));
                 return _articlesDetails;
               }(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   print(snapshot.error);
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text('No articles found.'));
+                  return const Center(child: Text('No articles found.'));
                 }
 
                 final articles = snapshot.data!;
@@ -126,7 +127,7 @@ class _CustomArticleWidgetState extends State<CustomArticleWidget> {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 2,
             blurRadius: 7,
-            offset: Offset(0, 3), // changes position of shadow
+            offset: const Offset(0, 3), // changes position of shadow
           ),
         ],
       ),
@@ -135,16 +136,17 @@ class _CustomArticleWidgetState extends State<CustomArticleWidget> {
         children: [
           Text(
             widget.articleSummaryModel.result?.data?.title ?? "",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           widget.articleSummaryModel.result?.data?.authors?.isNotEmpty ?? false
               ? Text(
-              widget.articleSummaryModel.result?.data?.authors?.first
-                  .name ??
-                  "",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal))
-              : SizedBox(),
+                  widget.articleSummaryModel.result?.data?.authors?.first
+                          .name ??
+                      "",
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.normal))
+              : const SizedBox(),
         ],
       ),
     );

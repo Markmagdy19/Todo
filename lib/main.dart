@@ -1,3 +1,5 @@
+import 'package:chatt/db/db_helper.dart';
+import 'package:chatt/ui/utils/theme_provider.dart';
 import 'package:chatt/ui/widgets/navibar.dart';
 import 'package:chatt/ui/pages/auth.dart';
 import 'package:chatt/ui/pages/chat.dart';
@@ -5,11 +7,16 @@ import 'package:chatt/ui/pages/splash.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
+
 /////////////////////////////////
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
+  await DBHelper.initDb();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -21,39 +28,58 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      child: MainApp(),
+    );
+  }
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
-
       title: 'Flutter Demo',
-      theme: ThemeData(
-
-
-
-
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-
-
-      home: StreamBuilder( stream: FirebaseAuth.instance.authStateChanges(),builder: ((context , snapshot){
-        if(snapshot.connectionState==ConnectionState.waiting){
-          return const SplashScreen();
-        }
-        if(snapshot.hasData){
-          return const Navigatebar();
-        }
-        return const AuthScreen();
-
-
-      }),
+      debugShowCheckedModeBanner: false,
+      theme: Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark
+          ? darkThemeData
+          : lightThemeData,
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: ((context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const SplashScreen();
+          }
+          if (snapshot.hasData) {
+            return const Navigatebar();
+          }
+          return const AuthScreen();
+        }),
       ),
     );
   }
 }
 
-
-
+var lightThemeData = ThemeData(
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: Colors.deepPurple,
+    brightness: Brightness.light,
+  ),
+  useMaterial3: true,
+  brightness: Brightness.light,
+);
+var darkThemeData = ThemeData(
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: Colors.deepPurple,
+    brightness: Brightness.dark,
+  ),
+  useMaterial3: true,
+  brightness: Brightness.dark,
+);

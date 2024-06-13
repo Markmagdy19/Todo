@@ -31,8 +31,10 @@ class ApiService {
       if (maxdate != null) 'maxdate': maxdate,
     };
 
-    final searchResponse = await http.get(Uri.parse(
-        "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Cancer&retmax=20&retstart=0&retmode=json&sort=pub+date&datetype=pdat&reldate=365&mindate=2023%2F01%2F01&maxdate=2023%2F12%2F31"));
+    final searchResponse = await http
+        .get(Uri.parse(
+            "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=$keyword&retmax=20&retstart=0&retmode=json&sort=pub+date&datetype=pdat&reldate=365&mindate=2023%2F01%2F01&maxdate=2023%2F12%2F31"))
+        .timeout(Duration(seconds: 5));
     final searchData = json.decode(searchResponse.body);
     final idList = (searchData['esearchresult']['idlist'] as List)
         .map((id) => id.toString())
@@ -48,14 +50,19 @@ class ApiService {
           Uri.parse(
             "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=$articleId&retmode=json",
           ),
-          headers: {'Content-Type': 'application/json', 'Accept': '*/*'});
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': '*/*'
+          }).timeout(Duration(seconds: 5));
       searchData = searchResponse.body;
+
+      final articleSummary =
+          ArticleSummaryModel.fromJson(jsonDecode(searchData));
+      return articleSummary;
     } catch (e) {
       throw Exception(
           'Failed to fetch article details for ID $articleId: ${e.toString()}');
     }
-    final articleSummary = ArticleSummaryModel.fromJson(jsonDecode(searchData));
-    return articleSummary;
   }
 
   Future<List<ArticleSummaryModel>> fetchArticlesDetails(
@@ -68,8 +75,12 @@ class ApiService {
           i + batchSize > articleIds.length
               ? articleIds.length
               : i + batchSize);
-      final batchArticles =
-          await Future.wait(batchIds.map(fetchArticleDetails));
+      late final batchArticles;
+      try {
+        batchArticles = await Future.wait(batchIds.map(fetchArticleDetails));
+      } catch (e) {
+        print(e);
+      } //(e) {print(e);}
       articles.addAll(batchArticles);
     }
     return articles;
