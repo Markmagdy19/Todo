@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import '../../generated/l10n.dart';
 import 'dart:io';
 import 'package:chatt/ui/widgets/User_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -105,8 +105,8 @@ class _AuthScreenState extends State<AuthScreen> {
                           },
                           ),
                         TextFormField(
-                          decoration: const InputDecoration(
-                              labelText: 'Email Address'),
+                          decoration:  InputDecoration(
+                              labelText: S.of(context).Email_Address),
                           keyboardType: TextInputType.emailAddress,
                           autocorrect: false,
                           textCapitalization: TextCapitalization.none,
@@ -117,7 +117,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             if (value == null ||
                                 value.trim().isEmpty ||
                                 !value.contains('@')) {
-                              return 'please enter a valid email address';
+                              return  S.of(context).please_enter_a_valid_email_address;
                             }
                             return null;
                           },
@@ -125,8 +125,8 @@ class _AuthScreenState extends State<AuthScreen> {
                         //////////////////
                         if(! _isLogin)
                           TextFormField(
-                            decoration: const InputDecoration(
-                                labelText: 'Username'),
+                            decoration:  InputDecoration(
+                                labelText: S.of(context).Username),
 
                             onSaved:(value)=>_enteredUsername= value! ,
 
@@ -134,7 +134,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             validator: (value) {
                               if (value == null ||
                                   value.trim().length< 4) {
-                                return 'please enter at least 4 characters.';
+                                return  S.of(context).please_enter_at_least_4_characters;
                               }
                               return null;
                             },
@@ -142,14 +142,14 @@ class _AuthScreenState extends State<AuthScreen> {
 
                         ////////////////////////////
                         TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: 'Password',
+                          decoration:  InputDecoration(
+                            labelText: S.of(context).Password,
                           ),
                           obscureText: true,
                           onSaved:(value)=>_enteredPassword= value! ,
                           validator: (value) {
                             if (value == null || value.trim().length < 6) {
-                              return 'password must be at least 6 characters long.';
+                              return S.of(context).password_must_be_at_least_6_characters_long;
                             }
                             return null;
                           },
@@ -163,7 +163,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.orange,
                             ),
-                            child: Text(_isLogin ? 'login' : 'Sign up'),
+                            child: Text(_isLogin ? S.of(context).Login : S.of(context).Signup),
                           ),
                         if(!_isUploading)
                           TextButton(
@@ -173,8 +173,8 @@ class _AuthScreenState extends State<AuthScreen> {
                               });
                             },
                             child: Text(_isLogin
-                                ? 'Create an Account'
-                                : 'I already have an account'),
+                                ?  S.of(context).Create_an_Account
+                                :  S.of(context).I_already_have_an_account ),
                           ),
                       ],
                     ),

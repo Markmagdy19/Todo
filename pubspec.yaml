@@ -36,6 +36,11 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  google_generative_ai: ^0.4.3
+# flutter_localization: ^0.2.0
+  #flutter_localizations:
+  flutter_localizations:
+      sdk: flutter
   firebase_core: ^2.32.0
   flutter_chat_ui: ^1.6.13
   firebase_auth: ^4.20.0
@@ -43,20 +48,12 @@ dependencies:
   image_picker: ^1.1.2
   cloud_firestore: ^4.17.5
   firebase_messaging: ^14.9.4
-
   flutter_firebase_chat_core: ^1.6.7
   flutter_chat_types: ^3.6.2
-
-
-
   get_storage: ^2.1.1
   get: ^4.6.6
   flutter_local_notifications: ^17.1.2
-
-
-
-  ## flutter_native_timezone: ^2.0.0
-
+## flutter_native_timezone: ^2.0.0
   flutter_local_notifications_platform_interface: ^7.1.0
   flutter_timezone: ^1.0.8
   intl: ^0.19.0
@@ -70,6 +67,7 @@ dependencies:
   xml: ^6.5.0
   rxdart: ^0.27.2
   provider: ^6.1.2
+  intl_utils: ^2.8.7
 
 
 
@@ -149,3 +147,5 @@ moor_flutter: ^4.1.0
 ffi: ^2.1.2
 # for sqlite on android
 sqlite3_flutter_libs:
+flutter_intl:
+  enabled: true

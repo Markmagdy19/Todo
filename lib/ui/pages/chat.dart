@@ -2,6 +2,7 @@ import 'package:chatt/ui/widgets/Chat_messages.dart';
 import 'package:chatt/ui/widgets/new_messages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../generated/l10n.dart';
 
 
 class ChatScreen extends StatelessWidget {
@@ -10,7 +11,7 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context){
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Medicine gp'),
+          title:  Text(S.of(context).Hospital_Group),
           actions: [
             IconButton(onPressed: (){
               FirebaseAuth.instance.signOut();

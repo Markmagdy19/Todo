@@ -15,9 +15,10 @@ import 'package:intl/intl.dart';
 import 'package:chatt/ui/widgets/task_tile.dart';
 import 'package:provider/provider.dart';
 import '../../controllers/task_controller.dart';
+import '../../generated/l10n.dart';
 import '../../models/task.dart';
 import '../utils/theme.dart';
-
+import 'package:chatt/models/services/Localization.dart';
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -118,13 +119,13 @@ class _HomePageState extends State<HomePage> {
                 style: subheadingStyle(context),
               ),
               Text(
-                'Today',
+              "Today",
                 style: headingStyle(context),
               ),
             ],
           ),
           MyButton(
-            label: '+ Add Task',
+            label: S.of(context).Add_Task_Button,
             onTap: () async {
               await Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const AddTaskPage()));
@@ -184,16 +185,16 @@ class _HomePageState extends State<HomePage> {
                   : Axis.vertical,
               itemBuilder: (BuildContext context, int index) {
                 var task = _taskController.taskList[index];
-                if (task.repeat == 'Daily' ||
+                if (task.repeat == S.of(context).Daily ||
                     task.date == DateFormat.yMd().format(_selectedDate) ||
-                    (task.repeat == 'Weekly' &&
+                    (task.repeat == S.of(context).Weekly &&
                         _selectedDate
                                     .difference(
                                         DateFormat.yMd().parse(task.date!))
                                     .inDays %
                                 7 ==
                             0) ||
-                    (task.repeat == 'Monthly' &&
+                    (task.repeat == S.of(context).Monthly &&
                         DateFormat.yMd().parse(task.date!).day ==
                             _selectedDate.day)) {
                   // Sanitize and parse the time string
@@ -317,7 +318,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                   SvgPicture.asset(
                     'assets/images/task.svg',
-                    semanticsLabel: 'Task',
+                    semanticsLabel: S.of(context).Task,
                     height: 100,
                     color: primaryClr.withOpacity(0.5),
                   ),
@@ -325,7 +326,7 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 30, vertical: 12),
                     child: Text(
-                      'You do not have any tasks yet\n Add new tasks to make your days productive ',
+                      S.of(context).Task_Message,
                       style: subTitleStyle(context),
                       textAlign: TextAlign.center,
                     ),
@@ -415,7 +416,7 @@ class _HomePageState extends State<HomePage> {
               task.isCompleted == 1
                   ? Container()
                   : _buildBottomSheet(
-                      label: 'Task Completed',
+                      label: S.of(context).Task_Completed,
                       onTap: () {
                         notifyHelper.cancelNotification(task);
                         _taskController.markTaskAsCompleted(task.id!);
@@ -423,7 +424,7 @@ class _HomePageState extends State<HomePage> {
                       },
                       clr: primaryClr),
               _buildBottomSheet(
-                  label: 'Delete Task',
+                  label:S.of(context).Delete_Task,
                   onTap: () {
                     notifyHelper.cancelNotification(task);
                     _taskController.deleteTasks(task);
@@ -436,7 +437,7 @@ class _HomePageState extends State<HomePage> {
                     : darkGreyClr,
               ),
               _buildBottomSheet(
-                  label: 'Cancel',
+                  label: S.of(context).Cancel,
                   onTap: () {
                     Get.back();
                   },

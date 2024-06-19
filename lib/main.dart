@@ -7,13 +7,18 @@ import 'package:chatt/ui/pages/splash.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
+import 'package:chatt/models/services/Localization.dart';
+
+import 'generated/l10n.dart';
 
 /////////////////////////////////
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DBHelper.initDb();
+  const FlutterLocalization();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -46,6 +51,15 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          S.delegate
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        locale:Locale("ar"),
+
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark

@@ -2,6 +2,7 @@ import 'package:chatt/ui/pages/home_page.dart';
 import 'package:chatt/ui/pages/chat.dart';
 import 'package:chatt/ui/widgets/pubmed.dart';
 import 'package:flutter/material.dart';
+import 'package:chatt/ui/pages/settings_page.dart';
 
 import '../../models/services/api_service.dart';
 
@@ -19,7 +20,7 @@ class _NavigatebarState extends State<Navigatebar> {
     ArticleListScreen(),
     const HomePage(),
     const ChatScreen(),
-    const Text("Page 4", style: TextStyle(fontSize: 30)),
+    SettingsPageUI(),
   ];
 
   @override
