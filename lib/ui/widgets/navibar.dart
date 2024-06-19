@@ -1,6 +1,6 @@
 import 'package:chatt/ui/pages/home_page.dart';
 import 'package:chatt/ui/pages/chat.dart';
-import 'package:chatt/ui/widgets/pubmed.dart';
+import 'package:chatt/ui/pages/pubmed.dart';
 import 'package:flutter/material.dart';
 import 'package:chatt/ui/pages/settings_page.dart';
 
