@@ -49,6 +49,11 @@
   "Opportunity" : "Opportunity",
   "Sign_Out" : "Sign Out",
   "English": "English",
-  "Arabic" : "Arabic"
+  "Arabic" : "Arabic",
+  "generatePresentations" : "Generate Presentations",
+  "home" : "Home",
+  "todo" : "Todo",
+  "chat" : "Chat",
+  "settings" : "Settings"
 }
 

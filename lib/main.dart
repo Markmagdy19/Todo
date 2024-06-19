@@ -1,17 +1,17 @@
 import 'package:chatt/db/db_helper.dart';
+import 'package:chatt/models/services/Localization.dart';
+import 'package:chatt/ui/pages/auth.dart';
+import 'package:chatt/ui/pages/splash.dart';
+import 'package:chatt/ui/utils/language_provider.dart';
 import 'package:chatt/ui/utils/theme_provider.dart';
 import 'package:chatt/ui/widgets/navibar.dart';
-import 'package:chatt/ui/pages/auth.dart';
-import 'package:chatt/ui/pages/chat.dart';
-import 'package:chatt/ui/pages/splash.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'firebase_options.dart';
-import 'package:chatt/models/services/Localization.dart';
 
+import 'firebase_options.dart';
 import 'generated/l10n.dart';
 
 /////////////////////////////////
@@ -36,8 +36,15 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeProvider>(
+          create: (context) => ThemeProvider(),
+        ),
+        ChangeNotifierProvider<LanguageProvider>(
+          create: (context) => LanguageProvider(),
+        ),
+      ],
       child: MainApp(),
     );
   }
@@ -51,16 +58,14 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          S.delegate
-        ],
-        supportedLocales: S.delegate.supportedLocales,
-        locale:Locale("ar"),
-
-      title: 'Flutter Demo',
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        S.delegate
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      locale: Provider.of<LanguageProvider>(context).locale,
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark
           ? darkThemeData

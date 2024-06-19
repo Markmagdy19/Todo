@@ -78,8 +78,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "Today": MessageLookupByLibrary.simpleMessage("Today"),
         "Username": MessageLookupByLibrary.simpleMessage("Username"),
         "Weekly": MessageLookupByLibrary.simpleMessage("Weekly"),
+        "chat": MessageLookupByLibrary.simpleMessage("Chat"),
         "content_Settings":
             MessageLookupByLibrary.simpleMessage("content Settings"),
+        "generatePresentations":
+            MessageLookupByLibrary.simpleMessage("Generate Presentations"),
+        "home": MessageLookupByLibrary.simpleMessage("Home"),
         "password_must_be_at_least_6_characters_long":
             MessageLookupByLibrary.simpleMessage(
                 "password must be at least 6 characters long."),
@@ -90,6 +94,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "please enter at least 4 characters."),
         "required": MessageLookupByLibrary.simpleMessage("required"),
-        "title": MessageLookupByLibrary.simpleMessage("flutter Localization")
+        "settings": MessageLookupByLibrary.simpleMessage("Settings"),
+        "title": MessageLookupByLibrary.simpleMessage("flutter Localization"),
+        "todo": MessageLookupByLibrary.simpleMessage("Todo")
       };
 }

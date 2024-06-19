@@ -76,8 +76,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "Today": MessageLookupByLibrary.simpleMessage("اليوم"),
         "Username": MessageLookupByLibrary.simpleMessage("اسم المستخدم"),
         "Weekly": MessageLookupByLibrary.simpleMessage("أسبوعي"),
+        "chat": MessageLookupByLibrary.simpleMessage("الدردشة"),
         "content_Settings":
             MessageLookupByLibrary.simpleMessage("إعدادات المحتوى"),
+        "generatePresentations":
+            MessageLookupByLibrary.simpleMessage("إنشاء عروض تقديمية"),
+        "home": MessageLookupByLibrary.simpleMessage("الصفحة الرئيسية"),
         "password_must_be_at_least_6_characters_long":
             MessageLookupByLibrary.simpleMessage(
                 "يجب أن تكون كلمة المرور مكونة من 6 أحرف على الأقل."),
@@ -88,6 +92,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "يرجى إدخال 4 أحرف على الأقل."),
         "required": MessageLookupByLibrary.simpleMessage("مطلوب"),
-        "title": MessageLookupByLibrary.simpleMessage("فلاتر ترجمه ")
+        "settings": MessageLookupByLibrary.simpleMessage("الإعدادات"),
+        "title": MessageLookupByLibrary.simpleMessage("فلاتر ترجمه "),
+        "todo": MessageLookupByLibrary.simpleMessage("المهام")
       };
 }

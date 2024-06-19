@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 import 'package:chatt/models/article_summary_model.dart';
-import 'package:chatt/models/article.dart';
+import 'package:http/http.dart' as http;
 
 class ApiService {
   static const String _baseUrl =
@@ -17,20 +17,6 @@ class ApiService {
     String? mindate,
     String? maxdate,
   }) async {
-    final searchUrl = '$_baseUrl/esearch.fcgi';
-    final searchParams = {
-      'db': 'pubmed',
-      'term': keyword,
-      'retmax': maxResults.toString(),
-      'retmode': 'json',
-      'sort': sort,
-      if (field != null) 'field': field,
-      if (datetype != null) 'datetype': datetype,
-      if (reldate != null) 'reldate': reldate.toString(),
-      if (mindate != null) 'mindate': mindate,
-      if (maxdate != null) 'maxdate': maxdate,
-    };
-
     final searchResponse = await http
         .get(Uri.parse(
             "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=$keyword&retmax=20&retstart=0&retmode=json&sort=pub+date&datetype=pdat&reldate=365&mindate=2023%2F01%2F01&maxdate=2023%2F12%2F31"))
@@ -75,7 +61,7 @@ class ApiService {
           i + batchSize > articleIds.length
               ? articleIds.length
               : i + batchSize);
-      late final batchArticles;
+      List<ArticleSummaryModel> batchArticles = [];
       try {
         batchArticles = await Future.wait(batchIds.map(fetchArticleDetails));
       } catch (e) {

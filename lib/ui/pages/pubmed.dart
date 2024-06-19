@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:chatt/models/article_summary_model.dart';
 import 'package:chatt/models/services/api_service.dart';
+import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../generated/l10n.dart';
 import '../widgets/button.dart';
 
 class ArticleListScreen extends StatefulWidget {
@@ -34,16 +33,22 @@ class _ArticleListScreenState extends State<ArticleListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('PubMed Articles'),
-        actions: [ MyButton(
-          label: S.of(context).Add_Task_Button,
-          onTap: () async {
-            final _url =Uri.parse("https://www.canva.com/templates/?query=medical-presentations");
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: MyButton(
+              label: "Generate Presentations",
+              onTap: () async {
+                final _url = Uri.parse(
+                    "https://www.canva.com/templates/?query=medical-presentations");
 
-            if (!await launchUrl(_url)) {
-              throw Exception('Could not launch$_url');
-            }
-          },
-        )],
+                if (!await launchUrl(_url)) {
+                  throw Exception('Could not launch$_url');
+                }
+              },
+            ),
+          ),
+        ],
       ),
       body: Column(
         children: [

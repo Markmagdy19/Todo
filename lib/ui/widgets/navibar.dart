@@ -1,10 +1,10 @@
-import 'package:chatt/ui/pages/home_page.dart';
 import 'package:chatt/ui/pages/chat.dart';
+import 'package:chatt/ui/pages/home_page.dart';
 import 'package:chatt/ui/pages/pubmed.dart';
-import 'package:flutter/material.dart';
 import 'package:chatt/ui/pages/settings_page.dart';
+import 'package:flutter/material.dart';
 
-import '../../models/services/api_service.dart';
+import '../../generated/l10n.dart';
 
 class Navigatebar extends StatefulWidget {
   const Navigatebar({super.key});
@@ -40,12 +40,15 @@ class _NavigatebarState extends State<Navigatebar> {
           //unselectedFontSize: 14,
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
 
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-            BottomNavigationBarItem(icon: Icon(Icons.edit), label: "To Do"),
-            BottomNavigationBarItem(icon: Icon(Icons.chat), label: "Chat"),
+          items: [
             BottomNavigationBarItem(
-                icon: Icon(Icons.settings), label: "Settings"),
+                icon: Icon(Icons.home), label: S.of(context).home),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.edit), label: S.of(context).todo),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.chat), label: S.of(context).chat),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.settings), label: S.of(context).settings),
           ],
         ),
         body: Container(child: listWidget.elementAt(_selectedIndex)));

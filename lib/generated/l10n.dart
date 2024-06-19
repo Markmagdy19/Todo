@@ -559,6 +559,56 @@ class S {
       args: [],
     );
   }
+
+  /// `Generate Presentations`
+  String get generatePresentations {
+    return Intl.message(
+      'Generate Presentations',
+      name: 'generatePresentations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Home`
+  String get home {
+    return Intl.message(
+      'Home',
+      name: 'home',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Todo`
+  String get todo {
+    return Intl.message(
+      'Todo',
+      name: 'todo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Chat`
+  String get chat {
+    return Intl.message(
+      'Chat',
+      name: 'chat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get settings {
+    return Intl.message(
+      'Settings',
+      name: 'settings',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

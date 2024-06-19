@@ -49,6 +49,11 @@
   "Opportunity": "فرصة",
   "Sign_Out": "تسجيل الخروج",
   "English": "إنجليزي",
-  "Arabic" : "عربي"
+  "Arabic" : "عربي",
+  "generatePresentations": "إنشاء عروض تقديمية",
+  "home": "الصفحة الرئيسية",
+  "todo": "المهام",
+  "chat": "الدردشة",
+  "settings": "الإعدادات"
 }
 
